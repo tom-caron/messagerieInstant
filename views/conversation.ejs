@@ -8,6 +8,9 @@
   <style>
     .message {
       margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .message .sender {
       font-weight: bold;
@@ -38,10 +41,54 @@
         <% if (conversation.Messages.length > 0) { %>
           <% conversation.Messages.forEach(message => { %>
             <div class="message">
-              <span class="sender">
-                <%= message.User.id === userId ? 'Vous' : message.User.name %>:
-              </span>
-              <span class="content"><%= message.content %></span>
+              <div>
+                <span class="sender">
+                  <%= message.User.id === userId ? 'Vous' : message.User.name %>:
+                </span>
+                <span class="content"><%= message.content %></span>
+              </div>
+
+              <!-- Bouton "..." et menu contextuel -->
+              <% if (message.User.id === userId) { %>
+                <div class="dropdown">
+                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenu<%= message.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu<%= message.id %>">
+                    <!-- Modifier -->
+                    <li>
+                      <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editMessageModal<%= message.id %>">Modifier</button>
+                    </li>
+                    <!-- Supprimer -->
+                    <li>
+                      <form action="/messages/<%= message.id %>/delete" method="POST">
+                        <button type="submit" class="dropdown-item text-danger">Supprimer</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Modal de modification -->
+                <div class="modal fade" id="editMessageModal<%= message.id %>" tabindex="-1" aria-labelledby="editMessageModalLabel<%= message.id %>" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editMessageModalLabel<%= message.id %>">Modifier le message</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form action="/messages/<%= message.id %>/edit" method="POST">
+                        <div class="modal-body">
+                          <textarea class="form-control" name="content" rows="3" required><%= message.content %></textarea>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                          <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              <% } %>
             </div>
           <% }) %>
           <!-- Ancre pour scroller jusqu'au dernier message -->

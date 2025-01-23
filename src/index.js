@@ -6,6 +6,7 @@ const { connectDB } = require('./config/database');
 const { sequelize } = require('sequelize');
 const userRoutes = require('./routes/userRoutes');
 const conversationRoutes = require('./routes/conversationRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.set('views', './views');
 app.use(bodyParser.json());
 app.use('/users', userRoutes);
 app.use('/conversations', conversationRoutes);
+app.use('/messages', messageRoutes);
 
 const startServer = async () => {
   await connectDB();
