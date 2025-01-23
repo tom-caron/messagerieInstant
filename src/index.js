@@ -3,7 +3,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { connectDB } = require('./config/database');
+const { sequelize } = require('sequelize');
 const userRoutes = require('./routes/userRoutes');
+const conversationRoutes = require('./routes/conversationRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +19,7 @@ app.set('views', './views');
 
 app.use(bodyParser.json());
 app.use('/users', userRoutes);
+app.use('/conversations', conversationRoutes);
 
 const startServer = async () => {
   await connectDB();

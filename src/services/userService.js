@@ -48,14 +48,21 @@ const loginUser = async (email, password, res) => {
 
   const getAllUsersExceptCurrent = async (currentUserId) => {
     try {
+
       const users = await User.findAll({
         where: {
           id: { [Sequelize.Op.ne]: currentUserId }, // Exclure l'utilisateur connecté
         },
         attributes: ['id', 'email'], // On ne récupère que les champs nécessaires
       });
-      console.log(users);
-      return { success: true, data: users };
+
+      const count = await User.count({
+        where: {
+          id: { [Sequelize.Op.ne]: currentUserId }, // Exclure l'utilisateur connecté
+        },
+      });
+
+      return { success: true, data: users, count };
     } catch (error) {
       console.error('Error fetching users:', error);
       return { success: false, message: 'Failed to fetch users' };

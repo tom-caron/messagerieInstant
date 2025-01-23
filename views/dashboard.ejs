@@ -34,14 +34,7 @@
 </head>
 <body>
   <!-- Sidebar -->
-  <div class="sidebar d-flex flex-column">
-    <h3 class="text-center py-3">Messagerie</h3>
-    <a href="/#">Dashboard</a>
-    <a href="/#">Conversations</a>
-    <a href="/#">Profil</a>
-    <a href="/#">Paramètres</a>
-    <a href="/users/logout" class="mt-auto">Déconnexion</a>
-  </div>
+  <%- include('partials/sidebar') %>
 
   <!-- Main Content -->
   <div class="content">
@@ -53,7 +46,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Total Conversations</h5>
-              <p class="card-text display-6 text-primary">12</p>
+              <p class="card-text display-6 text-primary"><%= totalConversation %></p>
             </div>
           </div>
         </div>
@@ -71,7 +64,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Utilisateur connecté</h5>
-              <p class="card-text display-6 text-warning">4</p>
+              <p class="card-text display-6 text-warning"><%= totalUser %></p>
             </div>
           </div>
         </div>
@@ -88,7 +81,7 @@
         <% users.forEach(otherUser => { %>
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <%= otherUser.email %>
-            <a href="/conversations/start/<%= otherUser.id %>" class="btn btn-primary btn-sm">Start Conversation</a>
+            <a href="/conversations/start/<%= otherUser.id %>" class="btn btn-primary btn-sm">Discuter</a>
           </li>
         <% }) %>
       </ul>
